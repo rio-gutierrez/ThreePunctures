@@ -1,0 +1,52 @@
+# Schedule definitions for thorn ThreePunctures
+
+if (CCTK_Equals(initial_data, "threepunctures"))
+{
+  STORAGE: energy, angular_momentum, puncture_adm_mass, bare_mass
+
+  if (keep_u_around) {
+    STORAGE: puncture_u
+  }
+
+  SCHEDULE ThreePunctures_ParamCheck AT PARAMCHECK
+  {
+    LANG: C
+  } "Check parameters and thorn needs"
+
+  if (schedule_in_ADMBase_InitialData)
+  {
+      SCHEDULE GROUP ThreePunctures_Group IN ADMBase_InitialData
+      {
+      } "ThreePunctures initial data group"
+  }
+  else
+  {
+      SCHEDULE GROUP ThreePunctures_Group AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial before SetTmunu before HydroBase_Prim2ConInitial
+      {
+      } "ThreePunctures initial data group"
+  }
+
+  SCHEDULE ThreePunctures IN ThreePunctures_Group
+  {
+    LANG: C
+    STORAGE: puncture_u
+    READS: Grid::coordinates(Everywhere)
+    WRITES: Threepunctures::mp(Everywhere), Threepunctures::mm(Everywhere), Threepunctures::mt(Everywhere),
+            Threepunctures::mp_adm(Everywhere), Threepunctures::mm_adm(Everywhere), Threepunctures::mt_adm(Everywhere),
+            Threepunctures::E(Everywhere), Threepunctures::J1(Everywhere),
+            Threepunctures::J2(Everywhere), Threepunctures::J3(Everywhere),
+            Threepunctures::puncture_u(Everywhere)
+    WRITES: StaticConformal::conformal_state(Everywhere),
+            StaticConformal::confac_2derivs(Everywhere),
+            StaticConformal::confac_1derivs(Everywhere),
+            StaticConformal::confac(Everywhere)
+    WRITES: AdmBase::alp(Everywhere), AdmBase::metric(Everywhere), AdmBase::curv(Everywhere)
+    # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+  } "Create puncture black hole initial data"
+
+  SCHEDULE ThreePunctures_Metadata IN ThreePunctures_Group after ThreePunctures
+  {
+    LANG: C
+    OPTIONS: global
+  } "Output ThreePunctures metadata"
+}

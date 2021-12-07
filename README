@@ -1,0 +1,17 @@
+Cactus Code Thorn ThreePunctures
+Author: Mario Luis Gutierrez Abed
+
+Based on the original TwoPunctures thorn developed by:
+ - Marcus Ansorg
+ - Erik Schnetter
+ - Frank Löffler
+--------------------------------------------------------------------------
+
+1. Purpose
+
+Create initial for three puncture black holes using a single domain
+spectral method. The original method for two black holes 
+is described in Marcus Ansorg, Bernd Brügmann, Wolfgang Tichy,
+"A single-domain spectral method for black hole puncture data",
+PRD 70, 064011 (2004),
+arXiv:gr-qc/0404056.

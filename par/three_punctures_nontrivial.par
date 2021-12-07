@@ -1,0 +1,313 @@
+# m+ = 0.25
+# mt = 0.5
+# m- = 0.25
+
+ActiveThorns = "admanalysis admbase admcoupling admmacros coordgauge spacemask StaticConformal  boundary time cartgrid3d ioutil nanchecker CoordBase aeilocalinterp Slab SphericalSurface LocalReduce MoL Carpet CarpetInterp CarpetIOASCII CarpetLib CarpetReduce CarpetSlab AHFinderDirect CarpetIOHDF5 CarpetIOScalar ThreePunctures  SymBase LoopControl GSL TimerReport CarpetMask ReflectionSymmetry CarpetIOBasic TmunuBase hwloc SystemTopology"
+
+#############################################################
+# Grid
+#############################################################
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+CoordBase::domainsize                   = minmax
+CoordBase::xmin                         = -6
+CoordBase::ymin                         = -1
+CoordBase::zmin                         = -1
+CoordBase::xmax                         = 6
+CoordBase::ymax                         = 1
+CoordBase::zmax                         = 1
+CoordBase::dx                           = 0.02
+CoordBase::dy                           = 0.02
+CoordBase::dz                           = 0.02
+CoordBase::boundary_size_x_lower        = 4
+CoordBase::boundary_size_y_lower        = 4
+CoordBase::boundary_size_z_lower        = 4
+CoordBase::boundary_shiftout_x_lower    = 0
+CoordBase::boundary_shiftout_y_lower    = 0
+CoordBase::boundary_shiftout_z_lower    = 0
+CoordBase::boundary_size_x_upper        = 4
+CoordBase::boundary_size_y_upper        = 4
+CoordBase::boundary_size_z_upper        = 4
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+#############################################################
+# Symmetries
+#############################################################
+
+ReflectionSymmetry::reflection_x        = "no"
+ReflectionSymmetry::reflection_y        = "no"
+ReflectionSymmetry::reflection_z        = "no"
+ReflectionSymmetry::avoid_origin_x      = "no"
+ReflectionSymmetry::avoid_origin_y      = "no"
+ReflectionSymmetry::avoid_origin_z      = "no"
+
+
+#############################################################
+# Run statistics
+#############################################################
+
+TimerReport::out_every       = 1
+TimerReport::out_filename    = "TimerReport"
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::grid_coordinates_filename = "grid.asc"
+
+#############################################################
+# SphericalSurface
+#############################################################
+
+SphericalSurface::nsurfaces = 3
+SphericalSurface::maxntheta = 39
+SphericalSurface::maxnphi   = 76
+
+SphericalSurface::ntheta      [0] = 39
+SphericalSurface::nphi        [0] = 76
+SphericalSurface::nghoststheta[0] = 2
+SphericalSurface::nghostsphi  [0] = 2
+
+SphericalSurface::ntheta      [1] = 39
+SphericalSurface::nphi        [1] = 76
+SphericalSurface::nghoststheta[1] = 2
+SphericalSurface::nghostsphi  [1] = 2
+
+SphericalSurface::ntheta      [2] = 39
+SphericalSurface::nphi        [2] = 76
+SphericalSurface::nghoststheta[2] = 2
+SphericalSurface::nghostsphi  [2] = 2
+
+#############################################################
+# Carpet
+#############################################################
+
+driver::ghost_size                      = 4
+Carpet::domain_from_coordbase           = "yes"
+Carpet::prolongation_order_space        = 5
+Carpet::prolongation_order_time         = 2
+Carpet::max_refinement_levels           = 1
+Carpet::use_buffer_zones                = "yes"
+#Carpet::num_integrator_substeps         = 1
+#Carpet::additional_buffer_zones         = 2
+Carpet::verbose                         = "no"
+Carpet::veryverbose                     = "no"
+Carpet::schedule_barriers               = "no"
+
+Carpet::init_3_timelevels               = "yes"
+Carpet::init_each_timelevel             = "no"
+Carpet::init_fill_timelevels            = "no"
+Carpet::enable_all_storage		= "no"
+Carpet::regrid_during_recovery          = "no"
+
+Carpet::refinement_factor              = 2
+#Carpet::time_refinement_factors        = "[1,1,1,2,4,8,16,32,64,128]"
+#Carpet::poison_new_timelevels          = "yes"
+#Carpet::check_for_poison               = "no"
+#Carpet::poison_value                   = 113
+#Carpet::use_tapered_grids              = "no"
+Carpet::output_timers_every             = 1
+#Carpet::print_timestats_every           = 0
+
+
+#############################################################
+# CarpetLib
+#############################################################
+
+CarpetLib::output_bboxes  = no
+CarpetLib::check_bboxes              = no
+CarpetLib::interleave_communications = yes
+CarpetLib::combine_sends             = yes
+CarpetLib::print_memstats_every      = 1
+#CarpetLib::max_memory_size_MB       = 3100
+#CarpetLib::poison_new_memory        = "yes"
+#CarpetLib::poison_value             = 114
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                     = "any"
+Cactus::max_runtime                   = 2850
+Cactus::cctk_final_time               = 0
+Cactus::cctk_itlast                   = 0
+Cactus::cctk_timer_output             = "full"
+Cactus::highlight_warning_messages    = "no"
+
+Time::dtfac                           = 0.25
+
+MethodOfLines::ode_method             = "RK4"
+MethodOfLines::MoL_NaN_Check          = "no"
+MethodOfLines::MoL_Intermediate_Steps = 4
+MethodOfLines::MoL_Num_Scratch_Levels = 1
+
+#############################################################
+# Initial data
+#############################################################
+
+ADMBase::initial_data = "threepunctures"
+ADMBase::initial_shift= "zero"
+ADMBase::initial_lapse= "one"
+
+ThreePunctures::verbose        = "yes"
+ThreePunctures::keep_u_around  = no
+
+ThreePunctures::npoints_A      = 70
+ThreePunctures::npoints_B      = 70
+ThreePunctures::npoints_phi    = 70
+
+ThreePunctures::par_b          = 5
+
+ThreePunctures::par_m_plus     = 0.25
+ThreePunctures::par_P_plus[0]  = 0
+ThreePunctures::par_P_plus[1]  = 0
+ThreePunctures::par_P_plus[2]  = 0
+ThreePunctures::par_S_plus[0]  = 0
+ThreePunctures::par_S_plus[1]  = 0
+ThreePunctures::par_S_plus[2]  = 0
+
+
+ThreePunctures::par_m_minus    = 0.25
+ThreePunctures::par_P_minus[0] = 0
+ThreePunctures::par_P_minus[1] = 0
+ThreePunctures::par_P_minus[2] = 0
+ThreePunctures::par_S_minus[0] = 0
+ThreePunctures::par_S_minus[1] = 0
+ThreePunctures::par_S_minus[2] = 0
+
+ThreePunctures::par_m_third    = 0.5
+ThreePunctures::par_P_third[0] = 0
+ThreePunctures::par_P_third[1] = 0
+ThreePunctures::par_P_third[2] = 0
+ThreePunctures::par_S_third[0] = 0
+ThreePunctures::par_S_third[1] = 0
+ThreePunctures::par_S_third[2] = 0
+
+ThreePunctures::Newton_maxit = 10
+ThreePunctures::Newton_tol = 7.0e-10
+ThreePunctures::grid_setup_method = "evaluation"
+ThreePunctures::TP_Tiny = 1e-6
+
+#############################################################
+# AHFinderDirect
+#############################################################
+
+AHFinderDirect::verbose_level                            = "physics highlights"
+AHFinderDirect::find_every                               = 1
+AHFinderDirect::N_horizons                               = 3
+AHFinderDirect::move_origins                             = "yes"
+AHFinderDirect::output_h_every                           = 1
+
+AHFinderDirect::geometry_interpolator_name = "Lagrange polynomial interpolation"
+AHFinderDirect::geometry_interpolator_pars = "order=3"
+AHFinderDirect::surface_interpolator_name  = "Lagrange polynomial interpolation"
+AHFinderDirect::surface_interpolator_pars  = "order=3"
+
+AHFinderDirect::origin_x                             [1] = 5
+AHFinderDirect::origin_y                             [1] = 0.0
+AHFinderDirect::origin_z                             [1] = 0.0
+AHFinderDirect::initial_guess_method                 [1] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[1] = 5
+AHFinderDirect::initial_guess__coord_sphere__y_center[1] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[1] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [1] = 0.13
+AHFinderDirect::dont_find_after_individual_time      [1] = 100
+AHFinderDirect::which_surface_to_store_info          [1] = 0
+AHFinderDirect::reset_horizon_after_not_finding      [1] = "no"
+
+
+
+AHFinderDirect::origin_x                             [2] = -5
+AHFinderDirect::origin_y                             [2] = 0.0
+AHFinderDirect::origin_z                             [2] = 0.0
+AHFinderDirect::initial_guess_method                 [2] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[2] = -5
+AHFinderDirect::initial_guess__coord_sphere__y_center[2] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[2] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [2] = 0.13
+AHFinderDirect::dont_find_after_individual_time      [2] = 100
+AHFinderDirect::which_surface_to_store_info          [2] = 0
+AHFinderDirect::reset_horizon_after_not_finding      [2] = "no"
+
+
+
+AHFinderDirect::origin_x                             [3] = 2.5
+AHFinderDirect::origin_y                             [3] = 0.0
+AHFinderDirect::origin_z                             [3] = 0.0
+AHFinderDirect::initial_guess_method                 [3] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[3] = 2.5
+AHFinderDirect::initial_guess__coord_sphere__y_center[3] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[3] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [3] = 0.25
+AHFinderDirect::dont_find_after_individual_time      [3] = 100
+AHFinderDirect::which_surface_to_store_info          [3] = 0
+AHFinderDirect::reset_horizon_after_not_finding      [3] = "no"
+
+
+
+#############################################################
+# CarpetMask
+#############################################################
+
+CarpetMask::verbose = no
+
+CarpetMask::excluded_surface       [0] = 0
+CarpetMask::excluded_surface_factor[0] = 1.0
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                          = $parfile
+IO::out_fileinfo                     = "all"
+
+CarpetIOBasic::outInfo_every         = 1
+CarpetIOBasic::outInfo_vars          = "Carpet::physical_time_per_hour"
+CarpetIOBasic::real_max              = 1e6
+CarpetIOBasic::int_width             = 12
+
+CarpetIOScalar::outScalar_every      = 0
+CarpetIOScalar::outScalar_reductions = "norm2 minimum"
+CarpetIOScalar::outScalar_vars       = ""
+
+CarpetIOASCII::out1D_every           = 0
+CarpetIOASCII::out1D_x               = "yes"
+CarpetIOASCII::out1D_y               = "yes"
+CarpetIOASCII::out1D_z               = "yes"
+CarpetIOASCII::out1D_d               = "no"
+CarpetIOASCII::out1D_vars            = ""
+
+CarpetIOASCII::out2D_every           = 0
+CarpetIOASCII::out2D_vars            = ""
+Carpetioascii::out3D_ghosts          = "yes"
+CarpetIOASCII::out2D_xz              = "yes"
+CarpetIOASCII::out2D_yz              = "yes"
+CarpetIOASCII::out_precision         = 19
+
+#CarpetIOHDF5::out_every              = 0
+#CarpetIOHDF5::out_vars               = ""
+
+CarpetIOHDF5::out2D_every            = 0
+CarpetIOHDF5::out2D_vars             = ""
+
+#############################################################
+# Checkpoint and recovery
+#############################################################
+
+CarpetIOHDF5::checkpoint       = "yes"
+CarpetIOHDF5::open_one_input_file_at_a_time = "yes"
+IO::checkpoint_every_walltime_hours = 6
+IO::checkpoint_keep            = 2
+IO::checkpoint_dir             = "three_punctures_nontrivial_checks"
+IO::checkpoint_on_terminate    = "no"
+IO::checkpoint_ID              = "no"
+
+IO::recover                    = "autoprobe"
+IO::recover_dir                = "three_punctures_nontrivial_checks"
+IO::recover_and_remove         = "no"
+
