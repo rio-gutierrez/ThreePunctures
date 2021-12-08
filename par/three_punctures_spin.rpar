@@ -6,8 +6,8 @@ $m_minus = 0.25;
 $m_third = 0.5;
 
 # linear momenta of p_plus
-$ppx = 1;
-$ppy = .5;
+$ppx = -.03;
+$ppy = .05;
 $ppz = 0;
 
 # angular momenta
